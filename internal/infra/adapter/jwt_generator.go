@@ -17,7 +17,7 @@ func (a *JWTGenerator) Execute(key, subject string) (string, error) {
 		return "", app.ErrInvalidKey
 	}
 
-	if len(key) < 2 {
+	if len(subject) < 2 {
 		return "", app.ErrInvalidSubject
 	}
 
