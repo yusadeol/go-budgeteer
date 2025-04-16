@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/joho/godotenv"
-	"github.com/yusadeol/go-budgeteer/internal/app"
+	"github.com/yusadeol/go-budgeteer/internal/app/usecase"
 	"github.com/yusadeol/go-budgeteer/internal/infra/adapter"
 	"log"
 	"os"
@@ -17,9 +17,9 @@ func main() {
 
 	tokenGenerator := adapter.NewJWTGenerator()
 
-	input := app.NewGenerateTokenInput(os.Getenv("JWT_KEY"), "Yuri Oliveira")
+	input := usecase.NewGenerateTokenInput(os.Getenv("JWT_KEY"), "Yuri Oliveira")
 
-	output, err := app.NewGenerateToken(tokenGenerator).Execute(input)
+	output, err := usecase.NewGenerateToken(tokenGenerator).Execute(input)
 	if err != nil {
 		log.Fatal(err)
 	}

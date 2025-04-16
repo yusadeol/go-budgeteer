@@ -2,7 +2,7 @@ package adapter
 
 import (
 	"errors"
-	"github.com/yusadeol/go-budgeteer/internal/app"
+	"github.com/yusadeol/go-budgeteer/internal/app/usecase"
 	"testing"
 )
 
@@ -28,7 +28,7 @@ func TestJWTGenerator_Execute(t *testing.T) {
 		subject := "user@example.com"
 
 		_, err := generator.Execute(key, subject)
-		if !errors.Is(err, app.ErrInvalidKey) {
+		if !errors.Is(err, usecase.ErrInvalidKey) {
 			t.Fatalf("expected ErrInvalidKey, got %v", err)
 		}
 	})
@@ -38,7 +38,7 @@ func TestJWTGenerator_Execute(t *testing.T) {
 		subject := "a"
 
 		_, err := generator.Execute(key, subject)
-		if !errors.Is(err, app.ErrInvalidSubject) {
+		if !errors.Is(err, usecase.ErrInvalidSubject) {
 			t.Fatalf("expected ErrInvalidSubject, got %v", err)
 		}
 	})
