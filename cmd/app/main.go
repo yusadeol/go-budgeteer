@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/joho/godotenv"
-	"github.com/yusadeol/go-budgeteer/internal/app/usecase"
-	"github.com/yusadeol/go-budgeteer/internal/infra/adapter"
+	"github.com/yusadeol/go-budgeteer/internal/infra/http"
+	"github.com/yusadeol/go-budgeteer/internal/infra/http/handler"
 	"log"
 	"os"
 )
@@ -15,14 +14,12 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	tokenGenerator := adapter.NewJWTGenerator()
+	httpServer := http.NewChiServer()
 
-	input := usecase.NewGenerateTokenInput(os.Getenv("JWT_KEY"), "Yuri Oliveira")
+	httpServer.Register(http.MethodGet, "/auth", handler.NewAuth().GenerateToken)
 
-	output, err := usecase.NewGenerateToken(tokenGenerator).Execute(input)
+	err = httpServer.Listen(os.Getenv("HTTP_PORT"))
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(output.Token)
 }
