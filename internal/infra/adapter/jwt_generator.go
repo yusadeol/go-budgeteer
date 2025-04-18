@@ -2,7 +2,7 @@ package adapter
 
 import (
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/yusadeol/go-budgeteer/internal/app/usecase"
+	"github.com/yusadeol/go-budgeteer/internal/app/usecase/token"
 	"time"
 )
 
@@ -14,11 +14,11 @@ func NewJWTGenerator() *JWTGenerator {
 
 func (a *JWTGenerator) Execute(key, subject string) (string, error) {
 	if len(key) < 16 {
-		return "", usecase.ErrInvalidKey
+		return "", token.ErrInvalidKey
 	}
 
 	if len(subject) < 2 {
-		return "", usecase.ErrInvalidSubject
+		return "", token.ErrInvalidSubject
 	}
 
 	claims := jwt.RegisteredClaims{
@@ -26,9 +26,9 @@ func (a *JWTGenerator) Execute(key, subject string) (string, error) {
 		Subject:   subject,
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	s, err := token.SignedString([]byte(key))
+	s, err := jwtToken.SignedString([]byte(key))
 	if err != nil {
 		return "", err
 	}

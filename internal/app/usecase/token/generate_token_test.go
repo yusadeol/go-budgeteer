@@ -1,4 +1,4 @@
-package usecase
+package token
 
 import (
 	"errors"
@@ -29,7 +29,7 @@ func TestGenerateToken_Execute(t *testing.T) {
 
 		mock := newMockTokenGenerator()
 		useCase := NewGenerateToken(mock)
-		input := NewGenerateTokenInput("test-key", "user@example.com")
+		input := NewInput("test-key", "user@example.com")
 
 		expectedToken := "fake.jwt.token"
 
@@ -49,14 +49,14 @@ func TestGenerateToken_Execute(t *testing.T) {
 		mock := newMockTokenGenerator()
 		useCase := NewGenerateToken(mock)
 
-		input := NewGenerateTokenInput("invalid", "user@example.com")
+		input := NewInput("invalid", "user@example.com")
 
 		_, err := useCase.Execute(input)
 		if !errors.Is(err, ErrInvalidKey) {
 			t.Errorf("expected error %+q, got %+v", ErrInvalidKey, err)
 		}
 
-		input = NewGenerateTokenInput("test-key", "invalid")
+		input = NewInput("test-key", "invalid")
 
 		_, err = useCase.Execute(input)
 		if !errors.Is(err, ErrInvalidSubject) {

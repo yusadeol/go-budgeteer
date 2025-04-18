@@ -1,4 +1,4 @@
-package usecase
+package token
 
 import "errors"
 
@@ -21,33 +21,33 @@ func NewGenerateToken(TokenGenerator TokenGenerator) *GenerateToken {
 	}
 }
 
-func (u *GenerateToken) Execute(input *GenerateTokenInput) (*GenerateTokenOutput, error) {
+func (u *GenerateToken) Execute(input *Input) (*Output, error) {
 	t, err := u.TokenGenerator.Execute(input.Key, input.Subject)
 	if err != nil {
 		return nil, err
 	}
 
-	return NewGenerateTokenOutput(t), nil
+	return NewOutput(t), nil
 }
 
-type GenerateTokenInput struct {
+type Input struct {
 	Key     string
 	Subject string
 }
 
-func NewGenerateTokenInput(key, subject string) *GenerateTokenInput {
-	return &GenerateTokenInput{
+func NewInput(key, subject string) *Input {
+	return &Input{
 		Key:     key,
 		Subject: subject,
 	}
 }
 
-type GenerateTokenOutput struct {
+type Output struct {
 	Token string
 }
 
-func NewGenerateTokenOutput(token string) *GenerateTokenOutput {
-	return &GenerateTokenOutput{
+func NewOutput(token string) *Output {
+	return &Output{
 		Token: token,
 	}
 }
