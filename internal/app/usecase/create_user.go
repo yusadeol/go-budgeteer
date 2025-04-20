@@ -1,4 +1,4 @@
-package user
+package usecase
 
 import "github.com/yusadeol/go-budgeteer/internal/domain/entity"
 
@@ -14,7 +14,7 @@ func NewCreateUser(userRepository UserRepository) *CreateUser {
 	return &CreateUser{userRepository: userRepository}
 }
 
-func (u *CreateUser) Execute(input Input) (*Output, error) {
+func (u *CreateUser) Execute(input CreateUserInput) (*CreateUserOutput, error) {
 	user := entity.NewUser(input.Name, input.Email, input.Password)
 
 	err := u.userRepository.Save(user)
@@ -22,30 +22,30 @@ func (u *CreateUser) Execute(input Input) (*Output, error) {
 		return nil, err
 	}
 
-	output := NewOutput(user.Id)
+	output := NewCreateUserOutput(user.Id)
 	return output, nil
 }
 
-type Input struct {
+type CreateUserInput struct {
 	Name     string
 	Email    string
 	Password string
 }
 
-func NewInput(name, email, password string) *Input {
-	return &Input{
+func NewCreateUserInput(name, email, password string) *CreateUserInput {
+	return &CreateUserInput{
 		Name:     name,
 		Email:    email,
 		Password: password,
 	}
 }
 
-type Output struct {
+type CreateUserOutput struct {
 	UserId string
 }
 
-func NewOutput(userId string) *Output {
-	return &Output{
+func NewCreateUserOutput(userId string) *CreateUserOutput {
+	return &CreateUserOutput{
 		UserId: userId,
 	}
 }

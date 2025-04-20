@@ -18,8 +18,8 @@ func main() {
 
 	routerSetup := route.NewRouterSetup(httpServer)
 
-	authRegistrar := route.NewAuthRegistrar()
-	routerSetup.Register(authRegistrar)
+	userRegistrar := route.NewUserRegistrar()
+	routerSetup.Register(userRegistrar)
 
 	routerSetup.Apply()
 
