@@ -6,22 +6,24 @@ import (
 )
 
 type User struct {
-	db *sql.DB
+	dbConnection *sql.DB
 }
 
-func NewUser(db *sql.DB) *User {
-	return &User{db: db}
+func NewUser(dbConnection *sql.DB) *User {
+	return &User{dbConnection: dbConnection}
 }
 
 func (u *User) Save(user *entity.User) error {
-	stmt, err := u.db.Prepare("INSERT INTO users(id, name, email, password) VALUES(?, ?, ?, ?)")
+	stmt, err := u.dbConnection.Prepare(`
+		INSERT INTO users(id, name, email, password, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)
+	`)
 	if err != nil {
 		return err
 	}
 
 	defer stmt.Close()
 
-	_, err = stmt.Exec(user.Id, user.Name, user.Email, user.Password)
+	_, err = stmt.Exec(user.Id, user.Name, user.Email, user.Password.Value, user.CreatedAt, user.UpdatedAt)
 	if err != nil {
 		return err
 	}

@@ -1,23 +1,33 @@
 package usecase
 
-import "github.com/yusadeol/go-budgeteer/internal/domain/entity"
+import (
+	"github.com/yusadeol/go-budgeteer/internal/domain/entity"
+	"github.com/yusadeol/go-budgeteer/internal/domain/vo"
+)
 
 type CreateUser struct {
 	userRepository UserRepository
+	passwordHasher vo.PasswordHasher
 }
 
 type UserRepository interface {
 	Save(user *entity.User) error
 }
 
-func NewCreateUser(userRepository UserRepository) *CreateUser {
-	return &CreateUser{userRepository: userRepository}
+func NewCreateUser(userRepository UserRepository, passwordHasher vo.PasswordHasher) *CreateUser {
+	return &CreateUser{userRepository: userRepository, passwordHasher: passwordHasher}
 }
 
-func (u *CreateUser) Execute(input CreateUserInput) (*CreateUserOutput, error) {
-	user := entity.NewUser(input.Name, input.Email, input.Password)
+func (u *CreateUser) Execute(input *CreateUserInput) (*CreateUserOutput, error) {
+	password := vo.NewPassword(u.passwordHasher)
+	err := password.Parse(input.Password)
+	if err != nil {
+		return nil, err
+	}
 
-	err := u.userRepository.Save(user)
+	user := entity.NewUser(input.Name, input.Email, password)
+
+	err = u.userRepository.Save(user)
 	if err != nil {
 		return nil, err
 	}
@@ -27,9 +37,9 @@ func (u *CreateUser) Execute(input CreateUserInput) (*CreateUserOutput, error) {
 }
 
 type CreateUserInput struct {
-	Name     string
-	Email    string
-	Password string
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func NewCreateUserInput(name, email, password string) *CreateUserInput {
@@ -41,7 +51,7 @@ func NewCreateUserInput(name, email, password string) *CreateUserInput {
 }
 
 type CreateUserOutput struct {
-	UserId string
+	UserId string `json:"user_id"`
 }
 
 func NewCreateUserOutput(userId string) *CreateUserOutput {
