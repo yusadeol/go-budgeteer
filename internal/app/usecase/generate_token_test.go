@@ -27,8 +27,8 @@ func TestGenerateToken_Execute(t *testing.T) {
 	t.Run("should be able to generate an token", func(t *testing.T) {
 		t.Parallel()
 
-		mock := newMockTokenGenerator()
-		useCase := NewGenerateToken(mock)
+		tokenGenerator := newMockTokenGenerator()
+		useCase := NewGenerateToken(tokenGenerator)
 		input := NewGenerateTokenInput("test-key", "user@example.com")
 
 		expectedToken := "fake.jwt.token"
@@ -46,8 +46,8 @@ func TestGenerateToken_Execute(t *testing.T) {
 	t.Run("should return an error when key or subject is invalid", func(t *testing.T) {
 		t.Parallel()
 
-		mock := newMockTokenGenerator()
-		useCase := NewGenerateToken(mock)
+		tokenGenerator := newMockTokenGenerator()
+		useCase := NewGenerateToken(tokenGenerator)
 
 		input := NewGenerateTokenInput("invalid", "user@example.com")
 
