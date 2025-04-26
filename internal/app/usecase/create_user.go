@@ -3,18 +3,15 @@ package usecase
 import (
 	"github.com/yusadeol/go-budgeteer/internal/domain/entity"
 	"github.com/yusadeol/go-budgeteer/internal/domain/vo"
+	"github.com/yusadeol/go-budgeteer/internal/infra/repository"
 )
 
 type CreateUser struct {
-	userRepository UserRepository
+	userRepository repository.User
 	passwordHasher vo.PasswordHasher
 }
 
-type UserRepository interface {
-	Save(user *entity.User) error
-}
-
-func NewCreateUser(userRepository UserRepository, passwordHasher vo.PasswordHasher) *CreateUser {
+func NewCreateUser(userRepository repository.User, passwordHasher vo.PasswordHasher) *CreateUser {
 	return &CreateUser{userRepository: userRepository, passwordHasher: passwordHasher}
 }
 

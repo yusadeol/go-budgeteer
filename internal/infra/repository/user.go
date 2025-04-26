@@ -5,15 +5,19 @@ import (
 	"github.com/yusadeol/go-budgeteer/internal/domain/entity"
 )
 
-type User struct {
+type User interface {
+	Save(user *entity.User) error
+}
+
+type UserDatabase struct {
 	dbConnection *sql.DB
 }
 
-func NewUser(dbConnection *sql.DB) *User {
-	return &User{dbConnection: dbConnection}
+func NewUserDatabase(dbConnection *sql.DB) *UserDatabase {
+	return &UserDatabase{dbConnection: dbConnection}
 }
 
-func (u *User) Save(user *entity.User) error {
+func (u *UserDatabase) Save(user *entity.User) error {
 	stmt, err := u.dbConnection.Prepare(`
 		INSERT INTO users(id, name, email, password, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)
 	`)

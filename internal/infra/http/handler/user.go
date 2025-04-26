@@ -27,7 +27,7 @@ func (h *User) Store(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	userRepository := repository.NewUser(h.dbConnection)
+	userRepository := repository.NewUserDatabase(h.dbConnection)
 	createUser := usecase.NewCreateUser(userRepository, h.passwordHasher)
 
 	output, err = createUser.Execute(&input)
