@@ -48,11 +48,11 @@ func NewCreateUserInput(name, email, password string) *CreateUserInput {
 }
 
 type CreateUserOutput struct {
-	UserId string `json:"user_id"`
+	Id string `json:"id"`
 }
 
-func NewCreateUserOutput(userId string) *CreateUserOutput {
+func NewCreateUserOutput(id string) *CreateUserOutput {
 	return &CreateUserOutput{
-		UserId: userId,
+		Id: id,
 	}
 }
