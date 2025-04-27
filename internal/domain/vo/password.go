@@ -38,15 +38,11 @@ func (p *Password) Parse(password string) error {
 	return nil
 }
 
-func (p *Password) Compare(password string) error {
+func (p *Password) Compare(password string) (bool, error) {
 	isEqual, err := p.hasher.Verify(password, p.Value)
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	if !isEqual {
-		return ErrPasswordIsNotEqual
-	}
-
-	return nil
+	return isEqual, nil
 }
