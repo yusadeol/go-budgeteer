@@ -2,11 +2,17 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/yusadeol/go-budgeteer/internal/domain/entity"
+)
+
+var (
+	ErrUserNotFound = errors.New("user not found")
 )
 
 type User interface {
 	Save(user *entity.User) error
+	GetByEmail(email string) (*entity.User, error)
 }
 
 type UserDatabase struct {
@@ -18,19 +24,39 @@ func NewUserDatabase(dbConnection *sql.DB) *UserDatabase {
 }
 
 func (u *UserDatabase) Save(user *entity.User) error {
-	stmt, err := u.dbConnection.Prepare(`
-		INSERT INTO users(id, name, email, password, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)
-	`)
-	if err != nil {
-		return err
-	}
-
-	defer stmt.Close()
-
-	_, err = stmt.Exec(user.Id, user.Name, user.Email, user.Password.Value, user.CreatedAt, user.UpdatedAt)
+	_, err := u.dbConnection.Exec(
+		"INSERT INTO users(id, name, email, password, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)",
+		user.Id,
+		user.Name,
+		user.Email,
+		user.Password.Value,
+		user.CreatedAt,
+		user.UpdatedAt,
+	)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (u *UserDatabase) GetByEmail(email string) (*entity.User, error) {
+	var user entity.User
+
+	err := u.dbConnection.QueryRow(
+		"SELECT id, name, email, password, created_at, updated_at FROM users WHERE email = ?",
+		email,
+	).Scan(
+		&user.Id,
+		&user.Name,
+		&user.Email,
+		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
