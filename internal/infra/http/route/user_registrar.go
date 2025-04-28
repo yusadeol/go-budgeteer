@@ -20,4 +20,5 @@ func (r *UserRegistrar) Execute(server http.Server) {
 	userHandler := handler.NewUser(r.dbConnection, passwordHasher)
 
 	server.Register(http.MethodPost, "/users", userHandler.Store)
+	server.Register(http.MethodPost, "/users/auth", userHandler.Auth)
 }
