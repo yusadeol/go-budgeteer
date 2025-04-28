@@ -2,7 +2,6 @@ package adapter
 
 import (
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/yusadeol/go-budgeteer/internal/app/usecase"
 	"time"
 )
 
@@ -13,14 +12,6 @@ func NewJWTGenerator() *JWTGenerator {
 }
 
 func (a *JWTGenerator) Execute(key, subject string) (string, error) {
-	if len(key) < 16 {
-		return "", usecase.ErrGenerateTokenInvalidKey
-	}
-
-	if len(subject) < 2 {
-		return "", usecase.ErrGenerateTokenInvalidSubject
-	}
-
 	claims := jwt.RegisteredClaims{
 		Issuer:    "my-auth-server",
 		Subject:   subject,

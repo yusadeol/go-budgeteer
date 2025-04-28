@@ -1,12 +1,5 @@
 package usecase
 
-import "errors"
-
-var (
-	ErrGenerateTokenInvalidKey     = errors.New("invalid key")
-	ErrGenerateTokenInvalidSubject = errors.New("invalid subject")
-)
-
 type GenerateToken struct {
 	TokenGenerator TokenGenerator
 }
