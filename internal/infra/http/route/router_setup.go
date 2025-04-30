@@ -1,17 +1,19 @@
 package route
 
-import "github.com/yusadeol/go-budgeteer/internal/infra/http"
+import (
+	"github.com/yusadeol/go-budgeteer/internal/app/server"
+)
 
 type RouterSetup struct {
-	server     http.Server
+	server     server.Http
 	registrars []RouteRegistrar
 }
 
 type RouteRegistrar interface {
-	Execute(server http.Server)
+	Execute(server server.Http)
 }
 
-func NewRouterSetup(server http.Server) *RouterSetup {
+func NewRouterSetup(server server.Http) *RouterSetup {
 	return &RouterSetup{server: server}
 }
 

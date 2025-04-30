@@ -5,7 +5,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"github.com/yusadeol/go-budgeteer/internal/infra/http"
+	"github.com/yusadeol/go-budgeteer/internal/infra/adapter"
 	"github.com/yusadeol/go-budgeteer/internal/infra/http/route"
 	"log"
 	"os"
@@ -17,7 +17,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	httpServer := http.NewChiServer()
+	httpServer := adapter.NewChiServer()
 
 	routerSetup := route.NewRouterSetup(httpServer)
 
