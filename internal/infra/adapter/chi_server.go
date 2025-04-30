@@ -37,6 +37,7 @@ func (s *ChiServer) Group(callback func(server.RouterGroup)) {
 
 	chiRouterGroup.router.Group(func(r chi.Router) {
 		r.Use(chiRouterGroup.middlewares...)
+		
 		for _, route := range chiRouterGroup.routes {
 			r.Method(route.method.String(), route.url, http.HandlerFunc(route.callback))
 		}

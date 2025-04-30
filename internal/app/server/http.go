@@ -9,15 +9,8 @@ func (m Method) String() string {
 }
 
 const (
-	MethodGet     Method = "GET"
-	MethodPost    Method = "POST"
-	MethodPut     Method = "PUT"
-	MethodDelete  Method = "DELETE"
-	MethodPatch   Method = "PATCH"
-	MethodOptions Method = "OPTIONS"
-	MethodHead    Method = "HEAD"
-	MethodConnect Method = "CONNECT"
-	MethodTrace   Method = "TRACE"
+	MethodGet  Method = "GET"
+	MethodPost Method = "POST"
 )
 
 type Http interface {
