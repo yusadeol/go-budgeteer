@@ -84,3 +84,7 @@ func (h *User) Auth(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 }
+
+func (h *User) Show(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello World"))
+}
