@@ -6,6 +6,7 @@ import (
 	"github.com/yusadeol/go-budgeteer/internal/app/usecase"
 	"github.com/yusadeol/go-budgeteer/internal/domain/vo"
 	"github.com/yusadeol/go-budgeteer/internal/infra/adapter"
+	"github.com/yusadeol/go-budgeteer/internal/infra/http/middleware"
 	"github.com/yusadeol/go-budgeteer/internal/infra/repository"
 	"net/http"
 	"os"
@@ -86,5 +87,13 @@ func (h *User) Auth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *User) Show(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World"))
+	sub, isString := r.Context().Value(middleware.ContextKey("userId")).(string)
+	if !isString {
+		http.Error(w, "user Id not found in context", http.StatusBadRequest)
+		return
+	}
+	_, err := w.Write([]byte(sub))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
 }
