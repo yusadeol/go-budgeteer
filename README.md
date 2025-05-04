@@ -101,7 +101,3 @@ You can use a `.env` file or set the following variables manually:
 - `DB_PORT`: Database port (default: `3306`)
 - `DB_NAME`: Name of the database (e.g., `go_budgeteer`)
 - `TOKEN_KEY`: Key used for JWT signing
-
-## License
-
-Go Budgeteer is open-sourced software licensed under the [MIT license](LICENSE).
